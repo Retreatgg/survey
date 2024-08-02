@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: create table for answer_questions
+      author: Argen
+      changes:
+        - createTable:
+            tableName: answer_questions
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: question_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_question_id
+                    references: questions(id)
+              - column:
+                  name: answer
+                  type: varchar(150)

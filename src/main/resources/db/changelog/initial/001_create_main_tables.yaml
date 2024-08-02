@@ -1,0 +1,90 @@
+databaseChangeLog:
+  - changeSet:
+      id: create table for Users
+      author: Argen
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(90)
+              - column:
+                  name: password
+                  type: varchar(90)
+
+
+        - createTable:
+            tableName: questionnaire
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name_questionnaire
+                  type: varchar(200)
+
+
+        - createTable:
+            tableName: post
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: tittle
+                  type: varchar(250)
+              - column:
+                  name: description
+                  type: varchar(1000)
+              - column:
+                  name: author_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_author_id
+                    references: users(id)
+              - column:
+                  name: date_public
+                  type: datetime
+
+
+        - createTable:
+            tableName: questions
+            columns:
+              - column:
+                    name: id
+                    type: long
+                    autoIncrement: true
+                    constraints:
+                      primaryKey: true
+                      nullable: false
+              - column:
+                  name: question_name
+                  type: varchar(250)
+              - column:
+                  name: type_name
+                  type: varchar(50)
+              - column:
+                  name: questionnaire_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_questionnaire_id
+                    references: questionnaire(id)
+
