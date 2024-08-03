@@ -21,7 +21,6 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     private final QuestionService questionService;
     private final QuestionRepository questionRepository;
     private final QuestionAnswerRepository questionAnswerRepository;
-    private final QuestionnaireService questionnaireService;
 
     @Override
     public QuestionnaireDto getQuestionnaireById(Long id) {
