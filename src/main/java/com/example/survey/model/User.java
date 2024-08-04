@@ -22,4 +22,6 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     private List<Post> postList;
 
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users", cascade = CascadeType.ALL)
+    private List<Authority> authorities;
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("questionnaire")
+@RequestMapping("questionnaires")
 @RequiredArgsConstructor
 public class QuestionnaireController {
 
@@ -21,11 +21,6 @@ public class QuestionnaireController {
     @GetMapping("{id}")
     public ResponseEntity<QuestionnaireDto> getQuestionnaireById(@PathVariable Long id) {
         return ResponseEntity.ok(questionnaireService.getQuestionnaireById(id));
-    }
-
-    @GetMapping("{id}/result")
-    public Object getQuestionAnswerPercentages(@PathVariable Long id) {
-        return questionnaireService.getAnswersByQuestionnaireId(id);
     }
 
     @PostMapping("{id}")

@@ -7,3 +7,7 @@ spring:
     username: root
     password: qwerty
     driver-class-name: org.h2.Driver
+
+jwt:
+  secret: 984hg493gh0439rthr9uruj2fda309yh937gc763fe87t3f89723gf
+  lifetime: 25m

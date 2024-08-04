@@ -3,11 +3,9 @@ package com.example.survey.controller;
 import com.example.survey.dto.PostCreateDto;
 import com.example.survey.dto.PostDto;
 import com.example.survey.dto.PostEditDto;
-import com.example.survey.model.Post;
 import com.example.survey.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
