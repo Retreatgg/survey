@@ -7,5 +7,7 @@ import lombok.Data;
 @Builder
 public class PostCreateDto {
 
+    private String tittle;
     private String description;
+
 }

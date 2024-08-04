@@ -7,5 +7,6 @@ import lombok.Data;
 @Builder
 public class PostEditDto {
 
+    private String tittle;
     private String description;
 }
