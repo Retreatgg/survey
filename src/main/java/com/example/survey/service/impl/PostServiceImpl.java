@@ -8,10 +8,14 @@ import com.example.survey.repository.PostRepository;
 import com.example.survey.service.PostService;
 import com.example.survey.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,11 +32,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getPosts() {
-        List<Post> posts = postRepository.findAll();
-        return posts.stream()
-                .map(dtoBuilder::buildPostDto)
-                .toList();
+    public Page<PostDto> getPosts(PageRequest pageRequest) {
+        Pageable pageable = PageRequest.of(pageRequest.getPageNumber(), pageRequest.getPageSize());
+        Page<Post> posts = postRepository.findAll(pageRequest);
+        return new PageImpl<>(
+                posts.getContent().stream()
+                .map(dtoBuilder::buildPostDto).collect(Collectors.toList()),
+                pageable, posts.getTotalElements());
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.util.List;
 public interface QuestionnaireService {
     QuestionnaireDto getQuestionnaireById(Long id);
 
-    List<QuestionAnswersDto> getAnswersByQuestionnaireId(Long id);
+    List<QuestionAnswersDto> getAnswersByQuestionnaireId(Long id, String institute);
 
     void saveResult(List<ResultQuestionnaireDto> resultQuestionnaireDto, Long id);
 

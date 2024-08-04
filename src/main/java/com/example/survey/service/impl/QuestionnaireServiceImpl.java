@@ -28,7 +28,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     @Override
-    public List<QuestionAnswersDto> getAnswersByQuestionnaireId(Long id) {
+    public List<QuestionAnswersDto> getAnswersByQuestionnaireId(Long id, String institute) {
         List<AnswerQuestion> answers = questionnaireRepository.getAnswerPercentages(id);
         Map<String, Map<String, Integer>> countMap = new HashMap<>();
         Map<String, Integer> totalCountMap = new HashMap<>();
