@@ -10,6 +10,7 @@ import java.util.List;
 public class CreateQuestionnaireDto {
 
     private String questionnaireName;
+    private Long instituteId;
     private List<CreateQuestionDto> questionDtoList;
 
 }

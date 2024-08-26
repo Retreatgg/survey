@@ -3,6 +3,8 @@ package com.example.survey.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 
@@ -25,5 +27,10 @@ public class Questionnaire {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "questionnaire")
     private List<Question> questionList;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "INSTITUTE_ID")
+    private Institute institute;
 
 }

@@ -19,8 +19,10 @@ public class QuestionnaireController {
     private final QuestionnaireService questionnaireService;
 
     @GetMapping("{id}")
-    public ResponseEntity<QuestionnaireDto> getQuestionnaireById(@PathVariable Long id) {
-        return ResponseEntity.ok(questionnaireService.getQuestionnaireById(id));
+    public ResponseEntity<QuestionnaireDto> getQuestionnaireById(
+            @PathVariable Long id,
+            @RequestParam(name = "instituteName", required = false) String institute) {
+        return ResponseEntity.ok(questionnaireService.getQuestionnaireById(id, institute));
     }
 
     @PostMapping("{id}")

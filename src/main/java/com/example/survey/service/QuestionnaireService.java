@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public interface QuestionnaireService {
-    QuestionnaireDto getQuestionnaireById(Long id);
+    QuestionnaireDto getQuestionnaireById(Long id, String institute);
 
     List<QuestionAnswersDto> getAnswersByQuestionnaireId(Long id, String institute);
 

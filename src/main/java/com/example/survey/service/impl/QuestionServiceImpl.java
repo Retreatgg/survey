@@ -18,6 +18,12 @@ public class QuestionServiceImpl implements QuestionService {
     private final QuestionRepository questionRepository;
 
     @Override
+    public Question findById(Long questionId) {
+        return questionRepository.findById(questionId)
+                .orElseThrow();
+    }
+
+    @Override
     public List<QuestionDto> getQuestionByQuestionnaireId(Long questionnaireId) {
         List<Question> questions = questionRepository.findByQuestionnaireId(questionnaireId);
         return getDtos(questions);

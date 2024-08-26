@@ -6,8 +6,10 @@ import com.example.survey.model.Questionnaire;
 import com.example.survey.repository.QuestionAnswerRepository;
 import com.example.survey.repository.QuestionRepository;
 import com.example.survey.repository.QuestionnaireRepository;
+import com.example.survey.service.InstituteService;
 import com.example.survey.service.QuestionService;
 import com.example.survey.service.QuestionnaireService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +23,14 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     private final QuestionService questionService;
     private final QuestionRepository questionRepository;
     private final QuestionAnswerRepository questionAnswerRepository;
+    private final InstituteService instituteService;
 
     @Override
-    public QuestionnaireDto getQuestionnaireById(Long id) {
-        return builderQuestionnaireDto(id);
+    public QuestionnaireDto getQuestionnaireById(Long id, String institute) {
+        Questionnaire questionnaire = questionnaireRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Анкета с ID: " + id + " не найден"));
+        List<QuestionDto> questions = questionService.getQuestionByQuestionnaireId(id);
+        return builderQuestionnaireDto(questionnaire, questions);
     }
 
     @Override
@@ -72,7 +78,6 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     @Override
     public void saveResult(List<ResultQuestionnaireDto> questionnaireDto, Long id) {
         questionnaireDto.forEach(ql -> {
-
             questionAnswerRepository.save(AnswerQuestion.builder()
                     .question(questionRepository.findById(ql.getQuestionId()).get())
                     .answer(ql.getAnswer())
@@ -82,9 +87,11 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     @Override
+    @Transactional
     public void create(CreateQuestionnaireDto create) {
         Questionnaire questionnaire = Questionnaire.builder()
                 .nameQuestionnaire(create.getQuestionnaireName())
+                .institute(instituteService.getInstituteById(create.getInstituteId()))
                 .build();
 
         Questionnaire newQuestionnaire = questionnaireRepository.save(questionnaire);
@@ -92,15 +99,12 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         questionService.createQuestions(create.getQuestionDtoList(), newQuestionnaire);
     }
 
-    private QuestionnaireDto builderQuestionnaireDto(Long questionnaireId) {
-        Optional<Questionnaire> optional = questionnaireRepository.findById(questionnaireId);
-        if(optional.isEmpty()) throw new IllegalArgumentException("Анкета с ID: " + questionnaireId + " не найден");
-        List<QuestionDto> questions = questionService.getQuestionByQuestionnaireId(questionnaireId);
-
+    private QuestionnaireDto builderQuestionnaireDto(Questionnaire questionnaire, List<QuestionDto> questionDtoList) {
         return QuestionnaireDto.builder()
-                .id(optional.get().getId())
-                .nameQuestionnaire(optional.get().getNameQuestionnaire())
-                .questionList(questions)
+                .id(questionnaire.getId())
+                .instituteName(questionnaire.getInstitute().getName())
+                .nameQuestionnaire(questionnaire.getNameQuestionnaire())
+                .questionList(questionDtoList)
                 .build();
     }
 }
