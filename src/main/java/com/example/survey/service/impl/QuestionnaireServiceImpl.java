@@ -9,8 +9,10 @@ import com.example.survey.repository.QuestionnaireRepository;
 import com.example.survey.service.InstituteService;
 import com.example.survey.service.QuestionService;
 import com.example.survey.service.QuestionnaireService;
+import com.example.survey.specifications.AnswerQuestionSpecification;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -26,7 +28,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     private final InstituteService instituteService;
 
     @Override
-    public QuestionnaireDto getQuestionnaireById(Long id, String institute) {
+    public QuestionnaireDto getQuestionnaireById(Long id) {
         Questionnaire questionnaire = questionnaireRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Анкета с ID: " + id + " не найден"));
         List<QuestionDto> questions = questionService.getQuestionByQuestionnaireId(id);
@@ -34,8 +36,11 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     @Override
-    public List<QuestionAnswersDto> getAnswersByQuestionnaireId(Long id, String institute) {
-        List<AnswerQuestion> answers = questionnaireRepository.getAnswerPercentages(id);
+    public List<QuestionAnswersDto> getAnswersByQuestionnaireId(Long id, String instituteName) {
+        Specification<AnswerQuestion> spec = AnswerQuestionSpecification
+                .hasInstituteName(instituteName)
+                .and(AnswerQuestionSpecification.hasQuestionnaireId(id));
+        List<AnswerQuestion> answers = questionAnswerRepository.findAll(spec);
         Map<String, Map<String, Integer>> countMap = new HashMap<>();
         Map<String, Integer> totalCountMap = new HashMap<>();
         Map<String, Boolean> isIntegerQuestionMap = new HashMap<>();
