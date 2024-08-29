@@ -17,7 +17,7 @@ public class AnswerQuestionSpecification {
 
     public static Specification<AnswerQuestion> hasQuestionnaireId(Long questionnaireId) {
         return (root, query, criteriaBuilder) -> {
-            Join<Question, AnswerQuestion> authorsBook = root.join("questions");
+            Join<Question, AnswerQuestion> authorsBook = root.join("question");
             return criteriaBuilder.equal(authorsBook.get("questionnaire").get("id"), questionnaireId);
         };
     }
