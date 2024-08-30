@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: create table images_posts
+      author: Argen
+      changes:
+        - createTable:
+            tableName: images_posts
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: image_name
+                  type: varchar(250)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: post_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_post_image_id
+                    references: post(id)

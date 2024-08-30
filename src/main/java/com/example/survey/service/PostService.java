@@ -3,6 +3,7 @@ package com.example.survey.service;
 import com.example.survey.dto.PostCreateDto;
 import com.example.survey.dto.PostDto;
 import com.example.survey.dto.PostEditDto;
+import com.example.survey.model.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,8 @@ import java.util.List;
 
 @Service
 public interface PostService {
-    void create(PostCreateDto postCreateDto);
-
+    PostDto create(PostCreateDto postCreateDto);
     Page<PostDto> getPosts(PageRequest pageRequest);
-
-    void edit(Long id, PostEditDto postEditDto);
+    PostDto edit(Long id, PostEditDto postEditDto);
+    Post findById(Long postId);
 }

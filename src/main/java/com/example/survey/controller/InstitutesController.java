@@ -1,7 +1,6 @@
 package com.example.survey.controller;
 
 import com.example.survey.dto.InstituteDto;
-import com.example.survey.enums.Institutes;
 import com.example.survey.service.InstituteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

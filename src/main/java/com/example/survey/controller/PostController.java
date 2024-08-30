@@ -7,7 +7,6 @@ import com.example.survey.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,22 +18,18 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("")
-    public HttpStatus createPost(@RequestBody PostCreateDto postCreateDto) {
-        postService.create(postCreateDto);
-        return HttpStatus.OK;
+    public ResponseEntity<PostDto> createPost(@RequestBody PostCreateDto postCreateDto) {
+        return ResponseEntity.ok(postService.create(postCreateDto));
     }
 
     @GetMapping("")
-    public ResponseEntity<Page<PostDto>> getPosts(@RequestParam(value = "page", required = false) Integer page,
-                                                  @RequestParam(value = "size", required = false) Integer size) {
-        if(null == page) page = 0;
-        if(null == size) size = 10;
+    public ResponseEntity<Page<PostDto>> getPosts(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                  @RequestParam(value = "size", defaultValue = "10") Integer size) {
         return ResponseEntity.ok(postService.getPosts(PageRequest.of(page, size)));
     }
 
     @PostMapping("{id}")
-    public HttpStatus editPost(@PathVariable Long id, @RequestBody PostEditDto postEditDto) {
-        postService.edit(id, postEditDto);
-        return HttpStatus.OK;
+    public ResponseEntity<PostDto> editPost(@PathVariable Long id, @RequestBody PostEditDto postEditDto) {
+        return ResponseEntity.ok(postService.edit(id, postEditDto));
     }
 }

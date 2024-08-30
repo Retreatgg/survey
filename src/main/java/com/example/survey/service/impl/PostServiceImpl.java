@@ -5,8 +5,10 @@ import com.example.survey.dto.PostDto;
 import com.example.survey.dto.PostEditDto;
 import com.example.survey.model.Post;
 import com.example.survey.repository.PostRepository;
+import com.example.survey.service.ImagePostService;
 import com.example.survey.service.PostService;
 import com.example.survey.service.UserService;
+import com.example.survey.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,12 +26,13 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final UserService userService;
+    private final ImagePostService imagePostService;
     private final DtoBuilder dtoBuilder;
+    private final FileUtil fileUtil;
 
     @Override
-    public void create(PostCreateDto postCreateDto) {
-        Post post = createPost(postCreateDto);
-        postRepository.save(post);
+    public PostDto create(PostCreateDto postCreateDto) {
+        return createPost(postCreateDto);
     }
 
     @Override
@@ -37,24 +41,36 @@ public class PostServiceImpl implements PostService {
         Page<Post> posts = postRepository.findAll(pageRequest);
         return new PageImpl<>(
                 posts.getContent().stream()
-                .map(dtoBuilder::buildPostDto).collect(Collectors.toList()),
+                        .map(p -> dtoBuilder.buildPostDto(p, imagePostService.getImagesByPostId(p.getId())))
+                        .collect(Collectors.toList()),
                 pageable, posts.getTotalElements());
     }
 
     @Override
-    public void edit(Long id, PostEditDto postEditDto) {
+    public PostDto edit(Long id, PostEditDto postEditDto) {
         Post post = postRepository.findById(id).orElseThrow();
         post.setDescription(postEditDto.getDescription());
         post.setTittle(postEditDto.getTittle());
-        postRepository.save(post);
+        Post editedPost = postRepository.save(post);
+        List<String> images = imagePostService.saveImages(postEditDto.getImages(), editedPost.getId());
+        return dtoBuilder.buildPostDto(editedPost, images);
     }
 
-    private Post createPost(PostCreateDto dto) {
-        return Post.builder()
+    @Override
+    public Post findById(Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow();
+    }
+
+    private PostDto createPost(PostCreateDto dto) {
+        Post post = Post.builder()
                 .author(userService.findById(1L))
                 .tittle(dto.getTittle())
                 .description(dto.getDescription())
                 .datePublic(LocalDateTime.now())
                 .build();
+        Post newPost = postRepository.save(post);
+        List<String> images = imagePostService.saveImages(dto.getImages(), newPost.getId());
+        return dtoBuilder.buildPostDto(newPost, images);
     }
 }
