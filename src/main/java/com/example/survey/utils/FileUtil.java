@@ -4,6 +4,7 @@ import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,7 +31,7 @@ public class FileUtil {
     @SneakyThrows
     public String saveUploadedFile(MultipartFile file, String subDir, Long postId) {
         String uuidFile = UUID.randomUUID().toString();
-        String resultFileName = postId +  " - " + LocalDate.now() + uuidFile;
+        String resultFileName = postId +  "-" + LocalDate.now() + uuidFile + file.getOriginalFilename();
 
         Path pathDir = Paths.get(UPLOAD_DIR + "/" + subDir);
         Files.createDirectories(pathDir);
@@ -60,19 +61,22 @@ public class FileUtil {
         return new MockMultipartFile(avatarString, bytes) ;
     }
 
-    public ResponseEntity<?> getOutputFile(String fileName, String subDir, MediaType mediaType) {
+    public ResponseEntity<?> getOutputFile(String fileName) {
         try {
-            byte[] image = Files.readAllBytes(Paths.get(UPLOAD_DIR + subDir + "/" + fileName));
+            Path filePath = Paths.get(fileName);
+            if (! Files.exists(filePath)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(null);
+            }
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(mediaType);
-            headers.setContentDispositionFormData("attachment", fileName);
-            headers.setContentLength(image.length);
-
-            return new ResponseEntity<>(image, headers, HttpStatus.OK);
+            InputStreamResource resource = new InputStreamResource(Files.newInputStream(filePath));
+            MediaType mediaType = MediaType.parseMediaType(Files.probeContentType(filePath));
+            return ResponseEntity.ok()
+                    .contentType(mediaType)
+                    .body(new InputStreamResource(resource.getInputStream()));
         } catch (IOException e) {
             log.error("No file found:", e);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Image not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }

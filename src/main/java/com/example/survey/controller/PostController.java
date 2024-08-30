@@ -17,8 +17,8 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("")
-    public ResponseEntity<PostDto> createPost(@RequestBody PostCreateDto postCreateDto) {
+    @PostMapping(value = "", consumes = {"multipart/form-data"})
+    public ResponseEntity<PostDto> createPost(@ModelAttribute PostCreateDto postCreateDto) {
         return ResponseEntity.ok(postService.create(postCreateDto));
     }
 

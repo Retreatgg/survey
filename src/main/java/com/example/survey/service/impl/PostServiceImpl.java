@@ -10,6 +10,7 @@ import com.example.survey.service.PostService;
 import com.example.survey.service.UserService;
 import com.example.survey.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +28,7 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final UserService userService;
+    @Lazy
     private final ImagePostService imagePostService;
     private final DtoBuilder dtoBuilder;
     private final FileUtil fileUtil;
@@ -70,7 +73,7 @@ public class PostServiceImpl implements PostService {
                 .datePublic(LocalDateTime.now())
                 .build();
         Post newPost = postRepository.save(post);
-        List<String> images = imagePostService.saveImages(dto.getImages(), newPost.getId());
+        List<String> images = imagePostService.saveImages(Arrays.stream(dto.getImages()).toList(), newPost.getId());
         return dtoBuilder.buildPostDto(newPost, images);
     }
 }

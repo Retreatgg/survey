@@ -7,6 +7,7 @@ import com.example.survey.service.ImagePostService;
 import com.example.survey.service.PostService;
 import com.example.survey.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,13 +21,13 @@ import java.util.List;
 public class ImagePostServiceImpl implements ImagePostService {
 
     private final ImagesPostRepository imagesPostRepository;
-    private final PostService postService;
+    private final PostRepository postRepository;
     private final FileUtil fileUtil;
 
 
     @Override
     public ResponseEntity<?> getImagesByPath(String path) {
-        return fileUtil.getOutputFile(path, "/images", MediaType.ALL);
+        return fileUtil.getOutputFile("data/images/" + path);
     }
 
     @Override
@@ -36,7 +37,7 @@ public class ImagePostServiceImpl implements ImagePostService {
             String name = fileUtil.saveUploadedFile(file, "images", postId);
             ImagesPost imagesPost = ImagesPost.builder()
                     .imageName(name)
-                    .post(postService.findById(postId))
+                    .post(postRepository.findById(postId).orElseThrow())
                     .build();
             imagesPostRepository.save(imagesPost);
             names.add(name);

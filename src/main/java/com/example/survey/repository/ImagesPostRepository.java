@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface ImagesPostRepository extends JpaRepository<ImagesPost, Long> {
 
-    @Query("select ip.imageName ImagesPost ip where ip.id = :postId")
+    @Query("select ip.imageName from ImagesPost ip where ip.id = :postId")
     List<String> findImagesByPostId(Long postId);
 }

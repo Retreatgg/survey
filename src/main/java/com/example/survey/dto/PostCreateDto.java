@@ -12,6 +12,6 @@ public class PostCreateDto {
 
     private String tittle;
     private String description;
-    private List<MultipartFile> images;
+    private MultipartFile[] images;
 
 }
