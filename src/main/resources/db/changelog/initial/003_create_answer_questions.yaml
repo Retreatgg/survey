@@ -23,3 +23,10 @@ databaseChangeLog:
               - column:
                   name: answer
                   type: varchar(150)
+              - column:
+                  name: institute_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_institute_answer_id
+                    references: institutes(id)
+                    nullable: false

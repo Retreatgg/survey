@@ -84,6 +84,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     public void saveResult(List<ResultQuestionnaireDto> questionnaireDto, Long id) {
         questionnaireDto.forEach(ql -> {
             questionAnswerRepository.save(AnswerQuestion.builder()
+                    .institute(instituteService.getInstituteById(ql.getInstituteId()))
                     .question(questionRepository.findById(ql.getQuestionId()).get())
                     .answer(ql.getAnswer())
                     .build());

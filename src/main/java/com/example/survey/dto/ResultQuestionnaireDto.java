@@ -7,6 +7,7 @@ import lombok.Data;
 @Builder
 public class ResultQuestionnaireDto {
 
+    private Long instituteId;
     private Long questionId;
     private String answer;
 }

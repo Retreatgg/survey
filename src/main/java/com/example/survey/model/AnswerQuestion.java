@@ -30,4 +30,10 @@ public class AnswerQuestion {
     @Column(name = "ANSWER", length = 150)
     private String answer;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @JoinColumn(name = "INSTITUTE_ID", nullable = false)
+    private Institute institute;
+
 }

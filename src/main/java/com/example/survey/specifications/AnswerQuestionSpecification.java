@@ -11,7 +11,7 @@ public class AnswerQuestionSpecification {
     public static Specification<AnswerQuestion> hasInstituteName(String instituteName) {
         return (r, q, cb) -> {
             if(instituteName.equals("default")) return cb.conjunction();
-            return cb.equal(r.get("question").get("questionnaire").get("institute").get("name"), instituteName);
+            return cb.equal(r.get("institute").get("name"), instituteName);
         };
     }
 
