@@ -53,7 +53,7 @@ public class PostServiceImpl implements PostService {
     public PostDto edit(Long id, PostEditDto postEditDto) {
         Post post = postRepository.findById(id).orElseThrow();
         post.setDescription(postEditDto.getDescription());
-        post.setTittle(postEditDto.getTittle());
+        post.setTittle(postEditDto.getTitle());
         Post editedPost = postRepository.save(post);
         List<String> images = imagePostService.saveImages(postEditDto.getImages(), editedPost.getId());
         return dtoBuilder.buildPostDto(editedPost, images);
@@ -65,10 +65,21 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow();
     }
 
+    @Override
+    public void delete(Long id) {
+        postRepository.deleteById(id);
+    }
+
+    @Override
+    public PostDto getPostById(Long id) {
+        Post post = findById(id);
+        return dtoBuilder.buildPostDto(post, imagePostService.getImagesByPostId(id));
+    }
+
     private PostDto createPost(PostCreateDto dto) {
         Post post = Post.builder()
                 .author(userService.findById(1L))
-                .tittle(dto.getTittle())
+                .tittle(dto.getTitle())
                 .description(dto.getDescription())
                 .datePublic(LocalDateTime.now())
                 .build();

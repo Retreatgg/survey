@@ -13,7 +13,7 @@ public class DtoBuilder {
 
     public PostDto buildPostDto(Post model, List<String> images) {
         return PostDto.builder()
-                .tittle(model.getTittle())
+                .title(model.getTittle())
                 .id(model.getId())
                 .description(model.getDescription())
                 .images(images)

@@ -9,7 +9,7 @@ import java.util.List;
 @Builder
 public class PostDto {
     private Long id;
-    private String tittle;
+    private String title;
     private String description;
     private List<String> images;
 

@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 public class PostCreateDto {
 
-    private String tittle;
+    private String title;
     private String description;
     private MultipartFile[] images;
 

@@ -7,12 +7,13 @@ import com.example.survey.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("posts")
+@RequestMapping("/api/posts")
 public class PostController {
 
     private final PostService postService;
@@ -28,8 +29,19 @@ public class PostController {
         return ResponseEntity.ok(postService.getPosts(PageRequest.of(page, size)));
     }
 
-    @PostMapping("{id}")
+    @GetMapping("{id}")
+    public ResponseEntity<PostDto> getPostById(@PathVariable Long id) {
+        return ResponseEntity.ok(postService.getPostById(id));
+    }
+
+    @PutMapping("{id}")
     public ResponseEntity<PostDto> editPost(@PathVariable Long id, @RequestBody PostEditDto postEditDto) {
         return ResponseEntity.ok(postService.edit(id, postEditDto));
+    }
+
+    @DeleteMapping("{id}")
+    public HttpStatus deletePost(@PathVariable Long id) {
+        postService.delete(id);
+        return HttpStatus.OK;
     }
 }

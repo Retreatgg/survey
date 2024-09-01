@@ -17,4 +17,6 @@ public interface PostService {
     Page<PostDto> getPosts(PageRequest pageRequest);
     PostDto edit(Long id, PostEditDto postEditDto);
     Post findById(Long postId);
+    void delete(Long id);
+    PostDto getPostById(Long id);
 }
