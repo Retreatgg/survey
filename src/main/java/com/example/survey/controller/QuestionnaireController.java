@@ -4,6 +4,7 @@ import com.example.survey.dto.CreateQuestionnaireDto;
 import com.example.survey.dto.QuestionnaireDto;
 import com.example.survey.dto.ResultQuestionnaireDto;
 import com.example.survey.service.QuestionnaireService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +26,13 @@ public class QuestionnaireController {
     }
 
     @PostMapping("{id}")
-    public HttpStatus saveResult(@RequestBody List<ResultQuestionnaireDto> resultQuestionnaireDto, @PathVariable Long id) {
+    public HttpStatus saveResult(@RequestBody @Valid List<ResultQuestionnaireDto> resultQuestionnaireDto, @PathVariable Long id) {
         questionnaireService.saveResult(resultQuestionnaireDto, id);
         return HttpStatus.OK;
     }
 
     @PostMapping("")
-    public HttpStatus createQuestionnaire(@RequestBody CreateQuestionnaireDto create) {
+    public HttpStatus createQuestionnaire(@RequestBody @Valid CreateQuestionnaireDto create) {
         questionnaireService.create(create);
         return HttpStatus.OK;
     }

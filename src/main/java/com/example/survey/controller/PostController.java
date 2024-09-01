@@ -4,6 +4,7 @@ import com.example.survey.dto.PostCreateDto;
 import com.example.survey.dto.PostDto;
 import com.example.survey.dto.PostEditDto;
 import com.example.survey.service.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +20,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping(value = "", consumes = {"multipart/form-data"})
-    public ResponseEntity<PostDto> createPost(@ModelAttribute PostCreateDto postCreateDto) {
+    public ResponseEntity<PostDto> createPost(@ModelAttribute @Valid PostCreateDto postCreateDto) {
         return ResponseEntity.ok(postService.create(postCreateDto));
     }
 
@@ -35,7 +36,7 @@ public class PostController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<PostDto> editPost(@PathVariable Long id, @RequestBody PostEditDto postEditDto) {
+    public ResponseEntity<PostDto> editPost(@PathVariable Long id, @RequestBody @Valid PostEditDto postEditDto) {
         return ResponseEntity.ok(postService.edit(id, postEditDto));
     }
 

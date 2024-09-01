@@ -2,6 +2,7 @@ package com.example.survey.controller;
 
 import com.example.survey.dto.JwtRequest;
 import com.example.survey.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +18,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping()
-    public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
+    public ResponseEntity<?> createAuthToken(@RequestBody @Valid JwtRequest authRequest) {
         return authService.createAuthToken(authRequest);
     }
 }
