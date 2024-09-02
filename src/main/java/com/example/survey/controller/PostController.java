@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,6 +20,7 @@ public class PostController {
 
     private final PostService postService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "", consumes = {"multipart/form-data"})
     public ResponseEntity<PostDto> createPost(@ModelAttribute @Valid PostCreateDto postCreateDto) {
         return ResponseEntity.ok(postService.create(postCreateDto));
@@ -35,11 +37,13 @@ public class PostController {
         return ResponseEntity.ok(postService.getPostById(id));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("{id}")
     public ResponseEntity<PostDto> editPost(@PathVariable Long id, @RequestBody @Valid PostEditDto postEditDto) {
         return ResponseEntity.ok(postService.edit(id, postEditDto));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("{id}")
     public HttpStatus deletePost(@PathVariable Long id) {
         postService.delete(id);

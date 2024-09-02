@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,12 +26,14 @@ public class QuestionnaireController {
         return ResponseEntity.ok(questionnaireService.getQuestionnaireById(id));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("{id}")
     public HttpStatus saveResult(@RequestBody @Valid List<ResultQuestionnaireDto> resultQuestionnaireDto, @PathVariable Long id) {
         questionnaireService.saveResult(resultQuestionnaireDto, id);
         return HttpStatus.OK;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("")
     public HttpStatus createQuestionnaire(@RequestBody @Valid CreateQuestionnaireDto create) {
         questionnaireService.create(create);
