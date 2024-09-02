@@ -1,5 +1,7 @@
 package com.example.survey.exceptions.handlers;
 
+import com.example.survey.exceptions.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -22,5 +24,29 @@ public class GlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<AppError> handleUserNotFoundEx(UserNotFoundException exception) {
+        return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(),
+                exception.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(QuestionNotFoundException.class)
+    public ResponseEntity<AppError> handleQuestionNotFoundEx(QuestionNotFoundException exception) {
+        return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(),
+                exception.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InstituteNotFoundException.class)
+    public ResponseEntity<AppError> handleInstituteNotFoundEx(InstituteNotFoundException exception) {
+        return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(),
+                exception.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PostNotFoundException.class)
+    public ResponseEntity<AppError> handlePostNotFoundEx(PostNotFoundException exception) {
+        return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(),
+                exception.getMessage()), HttpStatus.NOT_FOUND);
     }
 }

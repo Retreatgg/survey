@@ -3,6 +3,7 @@ package com.example.survey.service.impl;
 import com.example.survey.dto.PostCreateDto;
 import com.example.survey.dto.PostDto;
 import com.example.survey.dto.PostEditDto;
+import com.example.survey.exceptions.PostNotFoundException;
 import com.example.survey.model.Post;
 import com.example.survey.repository.PostRepository;
 import com.example.survey.service.ImagePostService;
@@ -28,10 +29,8 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final UserService userService;
-    @Lazy
     private final ImagePostService imagePostService;
     private final DtoBuilder dtoBuilder;
-    private final FileUtil fileUtil;
 
     @Override
     public PostDto create(PostCreateDto postCreateDto) {
@@ -62,7 +61,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post findById(Long postId) {
         return postRepository.findById(postId)
-                .orElseThrow();
+                .orElseThrow(() -> new PostNotFoundException("Пост по ID: " + postId + " не найден"));
     }
 
     @Override

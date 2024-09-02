@@ -23,7 +23,6 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
 
     private final QuestionnaireRepository questionnaireRepository;
     private final QuestionService questionService;
-    private final QuestionRepository questionRepository;
     private final QuestionAnswerRepository questionAnswerRepository;
     private final InstituteService instituteService;
     private final DtoBuilder dtoBuilder;
@@ -33,7 +32,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         Questionnaire questionnaire = questionnaireRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Анкета с ID: " + id + " не найден"));
         List<QuestionDto> questions = questionService.getQuestionByQuestionnaireId(id);
-        return builderQuestionnaireDto(questionnaire, questions);
+        return dtoBuilder.builderQuestionnaireDto(questionnaire, questions);
     }
 
     @Override
@@ -86,7 +85,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         questionnaireDto.forEach(ql -> {
             questionAnswerRepository.save(AnswerQuestion.builder()
                     .institute(instituteService.getInstituteById(ql.getInstituteId()))
-                    .question(questionRepository.findById(ql.getQuestionId()).get())
+                    .question(questionService.findById(ql.getQuestionId()))
                     .answer(ql.getAnswer())
                     .build());
         });
@@ -110,15 +109,6 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         return questionnaires.stream()
                 .map(dtoBuilder::questionnaireDto)
                 .toList();
-    }
-
-    private QuestionnaireDto builderQuestionnaireDto(Questionnaire questionnaire, List<QuestionDto> questionDtoList) {
-        return QuestionnaireDto.builder()
-                .id(questionnaire.getId())
-                .instituteName(questionnaire.getInstitute().getName())
-                .nameQuestionnaire(questionnaire.getNameQuestionnaire())
-                .questionList(questionDtoList)
-                .build();
     }
 
 }

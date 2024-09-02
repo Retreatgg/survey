@@ -2,6 +2,7 @@ package com.example.survey.service.impl;
 
 import com.example.survey.dto.CreateQuestionDto;
 import com.example.survey.dto.QuestionDto;
+import com.example.survey.exceptions.QuestionNotFoundException;
 import com.example.survey.model.Question;
 import com.example.survey.model.Questionnaire;
 import com.example.survey.repository.QuestionRepository;
@@ -16,17 +17,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuestionServiceImpl implements QuestionService {
     private final QuestionRepository questionRepository;
+    private final DtoBuilder dtoBuilder;
 
     @Override
     public Question findById(Long questionId) {
         return questionRepository.findById(questionId)
-                .orElseThrow();
+                .orElseThrow(() -> new QuestionNotFoundException("Вопрос с ID: " + questionId + " не найден"));
     }
 
     @Override
     public List<QuestionDto> getQuestionByQuestionnaireId(Long questionnaireId) {
         List<Question> questions = questionRepository.findByQuestionnaireId(questionnaireId);
-        return getDtos(questions);
+        return dtoBuilder.buildListQuestionDto(questions);
     }
 
     @Override
@@ -40,17 +42,5 @@ public class QuestionServiceImpl implements QuestionService {
 
             questionRepository.save(question);
         });
-    }
-
-    private List<QuestionDto> getDtos(List<Question> questions) {
-        List<QuestionDto> list = new ArrayList<>();
-        questions.forEach(q -> {
-            list.add(QuestionDto.builder()
-                            .id(q.getId())
-                            .questionName(q.getQuestionName())
-                            .typeName(q.getTypeName())
-                    .build());
-        });
-        return list;
     }
 }
