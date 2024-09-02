@@ -37,4 +37,9 @@ public class QuestionnaireController {
         return HttpStatus.OK;
     }
 
+    @GetMapping()
+    public ResponseEntity<List<QuestionnaireDto>> getQuestionnaires() {
+        return ResponseEntity.ok(questionnaireService.getAll());
+    }
+
 }

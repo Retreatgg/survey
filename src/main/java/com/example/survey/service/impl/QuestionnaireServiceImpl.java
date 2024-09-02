@@ -26,6 +26,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     private final QuestionRepository questionRepository;
     private final QuestionAnswerRepository questionAnswerRepository;
     private final InstituteService instituteService;
+    private final DtoBuilder dtoBuilder;
 
     @Override
     public QuestionnaireDto getQuestionnaireById(Long id) {
@@ -97,12 +98,18 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     public void create(CreateQuestionnaireDto create) {
         Questionnaire questionnaire = Questionnaire.builder()
                 .nameQuestionnaire(create.getQuestionnaireName())
-                .institute(instituteService.getInstituteById(create.getInstituteId()))
                 .build();
 
         Questionnaire newQuestionnaire = questionnaireRepository.save(questionnaire);
-
         questionService.createQuestions(create.getQuestionDtoList(), newQuestionnaire);
+    }
+
+    @Override
+    public List<QuestionnaireDto> getAll() {
+        List<Questionnaire> questionnaires = questionnaireRepository.findAllNames();
+        return questionnaires.stream()
+                .map(dtoBuilder::questionnaireDto)
+                .toList();
     }
 
     private QuestionnaireDto builderQuestionnaireDto(Questionnaire questionnaire, List<QuestionDto> questionDtoList) {
@@ -113,4 +120,5 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                 .questionList(questionDtoList)
                 .build();
     }
+
 }

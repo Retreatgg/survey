@@ -14,4 +14,5 @@ public interface QuestionnaireService {
     List<QuestionAnswersDto> getAnswersByQuestionnaireId(Long id, String instituteName);
     void saveResult(List<ResultQuestionnaireDto> resultQuestionnaireDto, Long id);
     void create(CreateQuestionnaireDto create);
+    List<QuestionnaireDto> getAll();
 }

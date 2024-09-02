@@ -1,7 +1,9 @@
 package com.example.survey.service.impl;
 
 import com.example.survey.dto.PostDto;
+import com.example.survey.dto.QuestionnaireDto;
 import com.example.survey.model.Post;
+import com.example.survey.model.Questionnaire;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +22,10 @@ public class DtoBuilder {
                 .build();
     }
 
-
+    public QuestionnaireDto questionnaireDto(Questionnaire model) {
+        return QuestionnaireDto.builder()
+                .nameQuestionnaire(model.getNameQuestionnaire())
+                .id(model.getId())
+                .build();
+    }
 }
