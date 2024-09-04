@@ -1,9 +1,6 @@
 package com.example.survey.service;
 
-import com.example.survey.dto.CreateQuestionnaireDto;
-import com.example.survey.dto.QuestionAnswersDto;
-import com.example.survey.dto.QuestionnaireDto;
-import com.example.survey.dto.ResultQuestionnaireDto;
+import com.example.survey.dto.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,5 +11,5 @@ public interface QuestionnaireService {
     List<QuestionAnswersDto> getAnswersByQuestionnaireId(Long id, String instituteName);
     void saveResult(List<ResultQuestionnaireDto> resultQuestionnaireDto, Long id);
     void create(CreateQuestionnaireDto create);
-    List<QuestionnaireDto> getAll();
+    List<QuestionnaireShowDto> getAll();
 }

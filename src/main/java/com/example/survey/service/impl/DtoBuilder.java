@@ -1,9 +1,6 @@
 package com.example.survey.service.impl;
 
-import com.example.survey.dto.InstituteDto;
-import com.example.survey.dto.PostDto;
-import com.example.survey.dto.QuestionDto;
-import com.example.survey.dto.QuestionnaireDto;
+import com.example.survey.dto.*;
 import com.example.survey.model.Institute;
 import com.example.survey.model.Post;
 import com.example.survey.model.Question;
@@ -27,9 +24,9 @@ public class DtoBuilder {
                 .build();
     }
 
-    public QuestionnaireDto questionnaireDto(Questionnaire model) {
-        return QuestionnaireDto.builder()
-                .nameQuestionnaire(model.getNameQuestionnaire())
+    public QuestionnaireShowDto questionnaireDto(Questionnaire model) {
+        return QuestionnaireShowDto.builder()
+                .questionnaireName(model.getNameQuestionnaire())
                 .id(model.getId())
                 .build();
     }
@@ -41,10 +38,11 @@ public class DtoBuilder {
                 .build();
     }
 
-    public QuestionnaireDto builderQuestionnaireDto(Questionnaire questionnaire) {
+    public QuestionnaireDto builderQuestionnaireDto(Questionnaire questionnaire, List<QuestionDto> questionDtoList) {
         return QuestionnaireDto.builder()
                 .id(questionnaire.getId())
                 .nameQuestionnaire(questionnaire.getNameQuestionnaire())
+                .questionList(questionDtoList)
                 .build();
     }
 

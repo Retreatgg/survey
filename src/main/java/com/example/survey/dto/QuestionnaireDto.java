@@ -11,5 +11,6 @@ public class QuestionnaireDto {
 
     private Long id;
     private String nameQuestionnaire;
+    private List<QuestionDto> questionList;
 
 }

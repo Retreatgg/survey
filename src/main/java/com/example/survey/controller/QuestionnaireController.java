@@ -2,6 +2,7 @@ package com.example.survey.controller;
 
 import com.example.survey.dto.CreateQuestionnaireDto;
 import com.example.survey.dto.QuestionnaireDto;
+import com.example.survey.dto.QuestionnaireShowDto;
 import com.example.survey.dto.ResultQuestionnaireDto;
 import com.example.survey.service.QuestionnaireService;
 import jakarta.validation.Valid;
@@ -40,7 +41,7 @@ public class QuestionnaireController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<QuestionnaireDto>> getQuestionnaires() {
+    public ResponseEntity<List<QuestionnaireShowDto>> getQuestionnaires() {
         return ResponseEntity.ok(questionnaireService.getAll());
     }
 
