@@ -41,12 +41,10 @@ public class DtoBuilder {
                 .build();
     }
 
-    public QuestionnaireDto builderQuestionnaireDto(Questionnaire questionnaire, List<QuestionDto> questionDtoList) {
+    public QuestionnaireDto builderQuestionnaireDto(Questionnaire questionnaire) {
         return QuestionnaireDto.builder()
                 .id(questionnaire.getId())
-                .instituteName(questionnaire.getInstitute().getName())
                 .nameQuestionnaire(questionnaire.getNameQuestionnaire())
-                .questionList(questionDtoList)
                 .build();
     }
 

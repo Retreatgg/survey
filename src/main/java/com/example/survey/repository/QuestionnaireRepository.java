@@ -16,6 +16,6 @@ import java.util.List;
 @Repository
 public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Long> {
 
-    @Query("select q.id, q.nameQuestionnaire from Questionnaire q")
+    @Query("select q from Questionnaire q")
     List<Questionnaire> findAllNames();
 }

@@ -28,9 +28,4 @@ public class Questionnaire {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "questionnaire")
     private List<Question> questionList;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    @JoinColumn(name = "INSTITUTE_ID")
-    private Institute institute;
-
 }

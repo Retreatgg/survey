@@ -26,7 +26,6 @@ public class QuestionnaireController {
         return ResponseEntity.ok(questionnaireService.getQuestionnaireById(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("{id}")
     public HttpStatus saveResult(@RequestBody @Valid List<ResultQuestionnaireDto> resultQuestionnaireDto, @PathVariable Long id) {
         questionnaireService.saveResult(resultQuestionnaireDto, id);

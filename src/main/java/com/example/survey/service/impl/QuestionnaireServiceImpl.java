@@ -4,7 +4,6 @@ import com.example.survey.dto.*;
 import com.example.survey.model.AnswerQuestion;
 import com.example.survey.model.Questionnaire;
 import com.example.survey.repository.QuestionAnswerRepository;
-import com.example.survey.repository.QuestionRepository;
 import com.example.survey.repository.QuestionnaireRepository;
 import com.example.survey.service.InstituteService;
 import com.example.survey.service.QuestionService;
@@ -15,7 +14,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +34,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         Questionnaire questionnaire = questionnaireRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Анкета с ID: " + id + " не найден"));
         List<QuestionDto> questions = questionService.getQuestionByQuestionnaireId(id);
-        return dtoBuilder.builderQuestionnaireDto(questionnaire, questions);
+        return dtoBuilder.builderQuestionnaireDto(questionnaire);
     }
 
     @Override
