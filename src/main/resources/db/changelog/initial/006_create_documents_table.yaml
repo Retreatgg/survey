@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: create table documents
+      author: Argen
+      changes:
+        - createTable:
+            tableName: documents
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(250)
+                  constraints:
+                    nullable: false
+              - column:
+                 name: document_path
+                 type: varchar(250)
+                 constraints:
+                   nullable: false

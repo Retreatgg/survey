@@ -79,5 +79,28 @@ public class FileUtil {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @SneakyThrows
+    public String saveFile(MultipartFile file, String subDir) {
+        String uuidFile = UUID.randomUUID().toString();
+        String resultFileName = LocalDate.now() + uuidFile + file.getOriginalFilename();
+
+        Path pathDir = Paths.get(UPLOAD_DIR + "/" + subDir);
+        Files.createDirectories(pathDir);
+
+        Path filePath = Paths.get(pathDir + "/" + resultFileName);
+        if(!Files.exists(filePath)) {
+            Files.createFile(filePath);
+        }
+
+        try(OutputStream os = Files.newOutputStream(filePath)) {
+            os.write(file.getBytes());
+        } catch (IOException e){
+            log.error(e.getMessage());
+        }
+
+        return resultFileName;
+    }
+
 }
 
