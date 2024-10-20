@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,33 +31,14 @@ public class FileUtil {
     public String saveUploadedFile(MultipartFile file, String subDir, Long postId) {
         String uuidFile = UUID.randomUUID().toString();
         String resultFileName = postId +  "-" + LocalDate.now() + uuidFile + file.getOriginalFilename();
-
-        Path pathDir = Paths.get(UPLOAD_DIR + "/" + subDir);
-        Files.createDirectories(pathDir);
-
-        Path filePath = Paths.get(pathDir + "/" + resultFileName);
-        if(!Files.exists(filePath)) {
-            Files.createFile(filePath);
-        }
-
-        try(OutputStream os = Files.newOutputStream(filePath)) {
-            os.write(file.getBytes());
-        } catch (IOException e){
-            log.error(e.getMessage());
-        }
-
-        return resultFileName;
+        return saveFile(resultFileName, subDir, file);
     }
 
-
-    public MultipartFile convertStringToMultipartFile(String avatarString) {
-        if (StringUtils.isEmpty(avatarString)) {
-            return null;
-        }
-
-        byte[] bytes = avatarString.getBytes();
-
-        return new MockMultipartFile(avatarString, bytes) ;
+    @SneakyThrows
+    public String saveDocument(MultipartFile file, String subDir) {
+        String uuidFile = UUID.randomUUID().toString();
+        String resultFileName = LocalDate.now() + uuidFile + file.getOriginalFilename();
+        return saveFile(resultFileName, subDir, file);
     }
 
     public ResponseEntity<?> getOutputFile(String fileName) {
@@ -81,10 +61,7 @@ public class FileUtil {
     }
 
     @SneakyThrows
-    public String saveFile(MultipartFile file, String subDir) {
-        String uuidFile = UUID.randomUUID().toString();
-        String resultFileName = LocalDate.now() + uuidFile + file.getOriginalFilename();
-
+    private String saveFile(String resultFileName, String subDir, MultipartFile file) {
         Path pathDir = Paths.get(UPLOAD_DIR + "/" + subDir);
         Files.createDirectories(pathDir);
 

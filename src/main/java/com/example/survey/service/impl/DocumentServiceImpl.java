@@ -20,7 +20,7 @@ public class DocumentServiceImpl implements DocumentService {
     public DocumentDto create(CreateDocumentDto createDocumentDto) {
         Document document = Document.builder()
                 .title(createDocumentDto.getTitle())
-                .documentPath(fileUtil.saveFile(createDocumentDto.getDocument(), "/images"))
+                .documentPath(fileUtil.saveDocument(createDocumentDto.getDocument(), "/images"))
                 .build();
         documentRepository.save(document);
         return buildDto(document);

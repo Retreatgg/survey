@@ -1,6 +1,7 @@
 package com.example.survey.service.impl;
 
 import com.example.survey.dto.InstituteDto;
+import com.example.survey.dto.InstituteEditDto;
 import com.example.survey.exceptions.InstituteNotFoundException;
 import com.example.survey.model.Institute;
 import com.example.survey.repository.InstituteRepository;
@@ -29,5 +30,18 @@ public class InstituteServiceImpl implements InstituteService {
         return institutes.stream()
                 .map(dtoBuilder::toDto)
                 .toList();
+    }
+
+    @Override
+    public InstituteDto edit(Long id, InstituteEditDto instituteEditDto) {
+        Institute institute = getInstituteById(id);
+        institute.setName(instituteEditDto.getName());
+        instituteRepository.save(institute);
+        return dtoBuilder.toDto(institute);
+    }
+
+    @Override
+    public void delete(Long id) {
+       instituteRepository.deleteById(id);
     }
 }
