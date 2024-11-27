@@ -4,7 +4,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5050/survey_db?stringtype=unspecified
+    url: jdbc:postgresql://survey-db:5050/survey_db?stringtype=unspecified
     username: argen
     password: coolboy
     driver-class-name: org.postgresql.Driver
